@@ -1,0 +1,94 @@
+name: X86_OP_SSRP
+
+on:
+#  push:
+#    branches: 
+#      - master
+  schedule:
+    - cron: 10 13 * * *
+  watch:
+    types: [started]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    
+    steps:
+    - name: Clone Repository
+      uses: actions/checkout@v1
+    - name: Init build dependencies
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        docker rmi `docker images -q`
+        sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
+        sudo -E apt-get remove -y --purge azure-cli ghc zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
+        sudo -E apt-get update -y
+        sudo -E apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler libreadline-dev ccache curl wget vim nano g++-multilib python python3 python-pip python3-pip python-ply python3-ply haveged lrzsz scons
+        sudo -E apt-get autoremove -y --purge
+        sudo -E apt-get clean -y
+    - name: Free Disk Space
+      run: |
+        sudo swapoff -a
+        sudo rm -f /swapfile
+        sudo apt clean
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        df -h
+    - name: Cleanup Old Action Artifacts
+      uses: kolpav/purge-artifacts-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        expire-in: 7days # Setting this to 0 will delete all artifacts
+    - name: Prepare Openwrt
+      run: |
+        df -h
+        sudo chown -R runner:runner /home/runner/work/X86_OP_SSRP
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP
+        cp -f ./scripts/01_prepare_openwrt.sh ./01_prepare_openwrt.sh
+        mkdir openwrt
+        cp -rf ./scripts/. ./openwrt/
+        cp -rf ./seed/. ./openwrt/
+        /bin/bash 01_prepare_openwrt.sh
+    - name: Prepare Package
+      run: |
+        df -h
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        /bin/bash 02_prepare_package.sh
+    - name: Convert Translation
+      run: |
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        /bin/bash 03_convert_translation.sh
+    - name: Remove Upx
+      run: |
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        /bin/bash 04_remove_upx.sh
+    - name: Make Download
+      run: |
+        df -h
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        make defconfig
+        make download -j10
+    - name: Make Toolchain
+      run: |
+        df -h
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        let make_process=$(nproc)+1
+        make toolchain/install -j${make_process} V=s
+    - name: Compile Openwrt
+      run: |
+        df -h
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        let make_process=$(nproc)+1
+        make -j${make_process} V=s || make -j1 V=s
+    - name: Cleaning
+      run: |
+        df -h
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt/bin/targets/x86/64
+        rm -rf `ls | grep -v ".gz"`
+        rm -rf `ls | grep -v "combined-squashfs"`
+    - name: Upload Firmwares
+      uses: actions/upload-artifact@master
+      with:
+        name: X86
+        path: /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt/bin/targets/x86/64/
