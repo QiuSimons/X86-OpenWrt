@@ -194,6 +194,7 @@ git clone -b master --single-branch https://github.com/QiuSimons/openwrt-fullcon
 #翻译及部分功能优化
 git clone -b master --single-branch https://github.com/QiuSimons/addition-trans-zh package/lean/lean-translate
 sed -i '/openssl/d' ./package/lean/lean-translate/files/zzz-default-settings
+sed -i '/banirq/d' ./package/lean/lean-translate/files/zzz-default-settings
 #SFE
 #svn co https://github.com/MeIsReallyBa/Openwrt-sfe-flowoffload-linux-5.4/trunk/shortcut-fe package/new/shortcut-fe
 #svn co https://github.com/project-openwrt/openwrt/branches/18.06-kernel5.4/package/lean/shortcut-fe package/new/shortcut-fe
