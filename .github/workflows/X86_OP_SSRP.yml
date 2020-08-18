@@ -6,8 +6,8 @@ on:
 #      - master
   schedule:
     - cron: 10 13 * * *
-  watch:
-    types: [started]
+#  watch:
+#    types: [started]
 
 jobs:
   build:
