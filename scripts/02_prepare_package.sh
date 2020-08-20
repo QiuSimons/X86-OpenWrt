@@ -1,4 +1,6 @@
 #!/bin/bash
+#Kernel
+wget -O- https://github.com/project-openwrt/openwrt/commit/abb0ba46c021595d49c35609b70e473e6c79d127.patch | patch -p1
 clear
 #使用O3级别的优化
 sed -i 's/Os/O3/g' include/target.mk
@@ -9,6 +11,8 @@ sed -i 's/O2/O3/g' ./rules.mk
 sed -i 's/0/1/g' feeds/packages/utils/irqbalance/files/irqbalance.config
 
 ##必要的patch
+#luci network
+patch -p1 < ../PATCH/luci_network-add-packet-steering.patch
 # patch jsonc
 patch -p1 < ../PATCH/use_json_object_new_int64.patch
 # patch dnsmasq
@@ -61,13 +65,13 @@ svn co https://github.com/openwrt/packages/trunk/devel/gcc feeds/packages/devel/
 #更换Golang版本
 rm -rf ./feeds/packages/lang/golang
 svn co https://github.com/openwrt/packages/trunk/lang/golang feeds/packages/lang/golang
+rm -rf ./feeds/packages/lang/golang/.svn
+rm -rf ./feeds/packages/lang/golang/golang
+svn co https://github.com/project-openwrt/packages/trunk/lang/golang/golang feeds/packages/lang/golang/golang
 #beardropper
 git clone https://github.com/NateLol/luci-app-beardropper package/luci-app-beardropper
 sed -i 's/"luci.fs"/"luci.sys".net/g' package/luci-app-beardropper/luasrc/model/cbi/beardropper/setting.lua
 sed -i '/firewall/d' package/luci-app-beardropper/root/etc/uci-defaults/luci-beardropper
-#luci-app-freq
-svn co https://github.com/project-openwrt/openwrt/branches/master/package/lean/luci-app-cpufreq package/lean/luci-app-cpufreq
-patch -p1 < ../PATCH/luci-app-freq.patch
 #京东签到
 git clone https://github.com/jerrykuku/node-request package/new/node-request
 git clone https://github.com/jerrykuku/luci-app-jd-dailybonus package/new/luci-app-jd-dailybonus
@@ -81,7 +85,8 @@ svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-accessco
 #AutoCore
 svn co https://github.com/project-openwrt/openwrt/branches/master/package/lean/autocore package/lean/autocore
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/coremark package/lean/coremark
-sed -i 's,-DMULTIT,-Ofast -DMULTIT,g' package/lean/coremark/Makefile
+mkdir package/lean/coremark/patches
+wget -P package/lean/coremark/patches/ https://raw.githubusercontent.com/QiuSimons/Others/master/coremark.patch
 #迅雷快鸟
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-xlnetacc package/lean/luci-app-xlnetacc
 #DDNS
@@ -105,9 +110,9 @@ git clone -b master --single-branch https://github.com/jerrykuku/luci-theme-argo
 git clone -b master --single-branch https://github.com/garypang13/luci-theme-edge package/new/luci-theme-edge
 #AdGuard
 cp -rf ../openwrt-lienol/package/diy/luci-app-adguardhome ./package/new/luci-app-adguardhome
+svn co https://github.com/project-openwrt/openwrt/branches/openwrt-19.07/package/ntlf9t/AdGuardHome package/new/AdGuardHome
 #cp -rf ../openwrt-lienol/package/diy/adguardhome ./package/new/AdGuardHome
 #git clone -b master --single-branch https://github.com/rufengsuixing/luci-app-adguardhome package/new/luci-app-adguardhome
-svn co https://github.com/project-openwrt/openwrt/branches/openwrt-19.07/package/ntlf9t/AdGuardHome package/new/AdGuardHome
 #ChinaDNS
 git clone -b luci --single-branch https://github.com/pexcn/openwrt-chinadns-ng package/new/luci-chinadns-ng
 git clone -b master --single-branch https://github.com/pexcn/openwrt-chinadns-ng package/new/chinadns-ng
@@ -143,10 +148,10 @@ cp -f ../PATCH/move_passwall_2_services.sh ./package/new/luci-app-passwall/move_
 pushd package/new/luci-app-passwall
 bash move_passwall_2_services.sh
 popd
-svn co https://github.com/Lienol/openwrt-package/trunk/package/tcping package/new/tcping
-svn co https://github.com/Lienol/openwrt-package/trunk/package/trojan-go package/new/trojan-go
-svn co https://github.com/Lienol/openwrt-package/trunk/package/brook package/new/brook
-svn co https://github.com/Lienol/openwrt-package/trunk/package/trojan-plus package/new/trojan-plus
+svn co https://github.com/xiaorouji/openwrt-package/trunk/package/tcping package/new/tcping
+svn co https://github.com/xiaorouji/openwrt-package/trunk/package/trojan-go package/new/trojan-go
+svn co https://github.com/xiaorouji/openwrt-package/trunk/package/brook package/new/brook
+svn co https://github.com/xiaorouji/openwrt-package/trunk/package/trojan-plus package/new/trojan-plus
 #订阅转换
 svn co https://github.com/project-openwrt/openwrt/branches/openwrt-19.07/package/ctcgfw/subconverter package/new/subconverter
 svn co https://github.com/project-openwrt/openwrt/branches/openwrt-19.07/package/ctcgfw/jpcre2 package/new/jpcre2
@@ -163,7 +168,8 @@ git clone -b master --single-branch https://github.com/brvphoenix/luci-app-wrtbw
 #流量监管
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-netdata package/lean/luci-app-netdata
 #OpenClash
-svn co https://github.com/vernesong/OpenClash/branches/master/luci-app-openclash package/new/luci-app-openclash
+#svn co https://github.com/vernesong/OpenClash/branches/master/luci-app-openclash package/new/luci-app-openclash
+git clone -b master --single-branch https://github.com/vernesong/OpenClash package/new/luci-app-openclash
 #SeverChan
 git clone -b master --single-branch https://github.com/tty228/luci-app-serverchan package/new/luci-app-serverchan
 svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/network/utils/iputils package/network/utils/iputils
@@ -181,8 +187,6 @@ svn co https://github.com/openwrt/packages/trunk/utils/containerd package/utils/
 svn co https://github.com/openwrt/packages/trunk/utils/libnetwork package/utils/libnetwork
 svn co https://github.com/openwrt/packages/trunk/utils/tini package/utils/tini
 svn co https://github.com/openwrt/packages/trunk/utils/runc package/utils/runc
-rm -rf ./package/lang/golang
-svn co https://github.com/openwrt/packages/trunk/lang/golang package/lang/golang
 #补全部分依赖（实际上并不会用到
 svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/utils/fuse package/utils/fuse
 svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/network/services/samba36 package/network/services/samba36
@@ -190,7 +194,7 @@ svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/libs/li
 rm -rf ./feeds/packages/utils/collectd
 svn co https://github.com/openwrt/packages/trunk/utils/collectd feeds/packages/utils/collectd
 #FullCone模块
-git clone -b master --single-branch https://github.com/QiuSimons/openwrt-fullconenat package/fullconenat
+cp -rf ../openwrt-lienol/package/network/fullconenat ./package/network/fullconenat
 #翻译及部分功能优化
 git clone -b master --single-branch https://github.com/QiuSimons/addition-trans-zh package/lean/lean-translate
 sed -i '/openssl/d' ./package/lean/lean-translate/files/zzz-default-settings
@@ -203,9 +207,18 @@ svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/fast-classifier p
 #cp -f ../PATCH/shortcut-fe package/base-files/files/etc/init.d/shortcut-fe
 #IPSEC
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-ipsec-vpnd package/lean/luci-app-ipsec-vpnd
+#Zerotier
+svn co https://github.com/project-openwrt/openwrt/branches/master/package/lean/luci-app-zerotier package/lean/luci-app-zerotier
+cp -f ../PATCH/new/script/move_2_services.sh ./package/lean/luci-app-zerotier/move_2_services.sh
+pushd package/lean/luci-app-zerotier
+bash move_2_services.sh
+popd
 #回滚zstd
 rm -rf ./feeds/packages/utils/zstd
 svn co https://github.com/QiuSimons/Others/trunk/zstd feeds/packages/utils/zstd
+#UPNP（回滚以解决某些沙雕设备的沙雕问题
+rm -rf ./feeds/packages/net/miniupnpd
+svn co https://github.com/coolsnowwolf/packages/trunk/net/miniupnpd feeds/packages/net/miniupnpd
 #frp
 rm -f ./feeds/luci/applications/luci-app-frps
 rm -f ./feeds/luci/applications/luci-app-frpc
@@ -214,14 +227,7 @@ rm -f ./package/feeds/packages/frp
 git clone https://github.com/lwz322/luci-app-frps.git package/lean/luci-app-frps
 git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frpc
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/frp package/feeds/packages/frp
-#Zerotier
-svn co https://github.com/project-openwrt/openwrt/branches/master/package/lean/luci-app-zerotier package/lean/luci-app-zerotier
-#cp -rf ../openwrt-lienol/package/lean/luci-app-zerotier ./package/lean/luci-app-zerotier
-#svn co https://github.com/project-openwrt/openwrt/trunk/package/lean/luci-app-zerotier package/lean/luci-app-zerotier
-cp -f ../PATCH/move_passwall_2_services.sh ./package/lean/luci-app-zerotier/move_passwall_2_services.sh
-pushd package/lean/luci-app-zerotier
-bash move_passwall_2_services.sh
-popd
+
 
 #Vermagic
 latest_version="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n 1p |sed 's/v//g' |sed 's/.tar.gz//g')"

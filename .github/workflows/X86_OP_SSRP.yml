@@ -63,6 +63,10 @@ jobs:
       run: |
         cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
         /bin/bash 04_remove_upx.sh
+    - name: Add ACL
+      run: |
+        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        /bin/bash 05_create_acl_for_luci.sh -a
     - name: Make Download
       run: |
         df -h
