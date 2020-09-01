@@ -210,9 +210,9 @@ svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/fast-classifier p
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-ipsec-vpnd package/lean/luci-app-ipsec-vpnd
 #Zerotier
 svn co https://github.com/project-openwrt/openwrt/branches/master/package/lean/luci-app-zerotier package/lean/luci-app-zerotier
-cp -f ../PATCH/new/script/move_2_services.sh ./package/lean/luci-app-zerotier/move_2_services.sh
+cp -f ../PATCH/new/script/move_passwall_2_services.sh ./package/lean/luci-app-zerotier/move_passwall_2_services.sh
 pushd package/lean/luci-app-zerotier
-bash move_2_services.sh
+bash move_passwall_2_services.sh
 popd
 #回滚zstd
 #rm -rf ./feeds/packages/utils/zstd
