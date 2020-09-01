@@ -188,11 +188,11 @@ svn co https://github.com/openwrt/packages/trunk/utils/libnetwork package/utils/
 svn co https://github.com/openwrt/packages/trunk/utils/tini package/utils/tini
 svn co https://github.com/openwrt/packages/trunk/utils/runc package/utils/runc
 #补全部分依赖（实际上并不会用到
-svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/utils/fuse package/utils/fuse
-svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/network/services/samba36 package/network/services/samba36
-svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/libs/libconfig package/libs/libconfig
-rm -rf ./feeds/packages/utils/collectd
-svn co https://github.com/openwrt/packages/trunk/utils/collectd feeds/packages/utils/collectd
+#svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/utils/fuse package/utils/fuse
+#svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/network/services/samba36 package/network/services/samba36
+#svn co https://github.com/openwrt/openwrt/branches/openwrt-19.07/package/libs/libconfig package/libs/libconfig
+#rm -rf ./feeds/packages/utils/collectd
+#svn co https://github.com/openwrt/packages/trunk/utils/collectd feeds/packages/utils/collectd
 #FullCone模块
 cp -rf ../openwrt-lienol/package/network/fullconenat ./package/network/fullconenat
 #翻译及部分功能优化
