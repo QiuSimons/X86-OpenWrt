@@ -143,7 +143,7 @@ svn co https://github.com/coolsnowwolf/packages/trunk/net/shadowsocks-libev pack
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/trojan package/lean/trojan
 svn co https://github.com/project-openwrt/openwrt/trunk/package/lean/tcpping package/lean/tcpping
 #PASSWALL
-svn co https://github.com/Lienol/openwrt-package/trunk/lienol/luci-app-passwall package/new/luci-app-passwall
+svn co https://github.com/xiaorouji/openwrt-package/trunk/lienol/luci-app-passwall package/new/luci-app-passwall
 cp -f ../PATCH/move_passwall_2_services.sh ./package/new/luci-app-passwall/move_passwall_2_services.sh
 pushd package/new/luci-app-passwall
 bash move_passwall_2_services.sh
