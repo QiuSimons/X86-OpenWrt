@@ -17,5 +17,5 @@ cp -f ./openwrt_back/include/kernel-version.mk ./openwrt_new/include/kernel-vers
 cp -f ./openwrt_back/package/base-files/image-config.in ./openwrt_new/package/base-files/image-config.in
 cp -rf ./openwrt_back/target/linux/. ./openwrt_new/target/linux/
 cp -rf ./openwrt_new/. ./openwrt/
-git clone -b dev-19.07 --single-branch https://github.com/Lienol/openwrt openwrt-lienol
+git clone -b 19.07 --single-branch https://github.com/Lienol/openwrt openwrt-lienol
 exit 0
