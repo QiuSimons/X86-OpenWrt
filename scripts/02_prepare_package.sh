@@ -44,6 +44,15 @@ wget https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/gen
 popd
 
 ##获取额外package
+#更换cryptodev-linux
+rm -rf ./package/kernel/cryptodev-linux
+svn co https://github.com/project-openwrt/openwrt/trunk/package/kernel/cryptodev-linux package/kernel/cryptodev-linux
+#更换curl
+rm -rf ./package/network/utils/curl
+svn co https://github.com/openwrt/packages/trunk/net/curl package/network/utils/curl
+#更换libcap
+rm -rf ./feeds/packages/libs/libcap/
+svn co https://github.com/openwrt/packages/trunk/libs/libcap feeds/packages/libs/libcap
 #更换Node版本
 rm -rf ./feeds/packages/lang/node
 svn co https://github.com/nxhack/openwrt-node-packages/trunk/node feeds/packages/lang/node
