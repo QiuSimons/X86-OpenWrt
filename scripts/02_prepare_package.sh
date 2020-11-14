@@ -31,16 +31,16 @@ pushd feeds/luci
 wget -O- https://github.com/LGA1150/fullconenat-fw3-patch/raw/master/luci.patch | git apply
 popd
 # Patch Kernel 以解决fullcone冲突
-wget -P target/linux/generic/hack-4.14/ https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/hack-4.14/952-net-conntrack-events-support-multiple-registrant.patch
+wget -P target/linux/generic/hack-4.14/ https://github.com/coolsnowwolf/openwrt/raw/lede-17.01/target/linux/generic/hack-4.14/952-net-conntrack-events-support-multiple-registrant.patch
 wget -P target/linux/generic/hack-4.14/ https://github.com/coolsnowwolf/lede/raw/master/target/linux/generic/hack-4.14/202-reduce_module_size.patch
-wget -P target/linux/x86/patches-4.14/ https://github.com/coolsnowwolf/lede/raw/master/target/linux/x86/patches-4.14/900-x86-Enable-fast-strings-on-Intel-if-BIOS-hasn-t-already.patch
+wget -P target/linux/x86/patches-4.14/ https://github.com/coolsnowwolf/openwrt/raw/lede-17.01/target/linux/x86/patches-4.14/900-x86-Enable-fast-strings-on-Intel-if-BIOS-hasn-t-already.patch
 # BBR_Patch（2.0
 wget -P target/linux/generic/pending-4.14/ https://raw.githubusercontent.com/QiuSimons/Others/master/607-tcp_bbr-adapt-cwnd-based-on-ack-aggregation-estimation.patch
 # Patch FireWall 以增添SFE
 patch -p1 < ../PATCH/luci-app-firewall_add_sfe_switch.patch
 # SFE内核补丁
 pushd target/linux/generic/hack-4.14
-wget https://raw.githubusercontent.com/coolsnowwolf/lede/master/target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
+wget https://raw.githubusercontent.com/coolsnowwolf/openwrt/lede-17.01/target/linux/generic/hack-4.14/999-net-patch-linux-kernel-to-support-shortcut-fe.patch
 popd
 
 ##获取额外package
