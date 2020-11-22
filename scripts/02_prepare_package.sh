@@ -252,7 +252,7 @@ svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/frp package/feeds
 
 
 #Vermagic
-latest_version="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n 1p |sed 's/v//g' |sed 's/.tar.gz//g')"
+latest_version="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n '/19/p' |sed -n 1p |sed 's/v//g' |sed 's/.tar.gz//g')"
 wget https://downloads.openwrt.org/releases/${latest_version}/targets/x86/64/packages/Packages.gz
 zgrep -m 1 "Depends: kernel (=.*)$" Packages.gz | sed -e 's/.*-\(.*\))/\1/' > .vermagic
 sed -i -e 's/^\(.\).*vermagic$/\1cp $(TOPDIR)\/.vermagic $(LINUX_DIR)\/.vermagic/' include/kernel-defaults.mk
