@@ -12,12 +12,10 @@ rm -f ./openwrt_new/include/version.mk
 rm -f ./openwrt_new/include/kernel-version.mk
 rm -f ./openwrt_new/package/base-files/image-config.in
 rm -rf ./openwrt_new/target/linux/.
-rm -rf ./openwrt_new/package/kernel/.
 cp -f ./openwrt_back/include/version.mk ./openwrt_new/include/version.mk
 cp -f ./openwrt_back/include/kernel-version.mk ./openwrt_new/include/kernel-version.mk
 cp -f ./openwrt_back/package/base-files/image-config.in ./openwrt_new/package/base-files/image-config.in
 cp -rf ./openwrt_back/target/linux/. ./openwrt_new/target/linux/
-cp -rf ./openwrt_back/package/kernel/. ./openwrt_new/package/kernel/
 cp -rf ./openwrt_new/. ./openwrt/
 git clone https://github.com/Lienol/openwrt.git openwrt-lienol
 git clone https://github.com/Lienol/openwrt-packages packages-lienol
