@@ -1,5 +1,5 @@
 #!/bin/bash
-latest_release="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n 1p)"
+latest_release="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n '/19/p' |sed -n 1p)"
 curl -LO "https://github.com/openwrt/openwrt/archive/${latest_release}"
 mkdir openwrt_back
 shopt -s extglob 
