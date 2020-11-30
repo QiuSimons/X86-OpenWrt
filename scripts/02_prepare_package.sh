@@ -99,7 +99,7 @@ cp -rf ../PATCH/duplicate/luci-app-control-weburl ./package/new/luci-app-control
 svn co https://github.com/project-openwrt/openwrt/branches/master/package/lean/autocore package/lean/autocore
 svn co https://github.com/project-openwrt/openwrt/branches/master/package/lean/coremark package/lean/coremark
 #迅雷快鸟
-svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-xlnetacc package/lean/luci-app-xlnetacc
+git clone https://github.com/garypang13/luci-app-xlnetacc package/lean/luci-app-xlnetacc
 #DDNS
 rm -rf ./feeds/packages/net/ddns-scripts
 rm -rf ./feeds/luci/applications/luci-app-ddns
@@ -154,16 +154,17 @@ svn co https://github.com/project-openwrt/openwrt/branches/master/package/ntlf9t
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-vlmcsd package/lean/luci-app-vlmcsd
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/vlmcsd package/lean/vlmcsd
 #PASSWALL
-svn co https://github.com/xiaorouji/openwrt-package/trunk/lienol/luci-app-passwall package/new/luci-app-passwall
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/luci-app-passwall package/new/luci-app-passwall
 cp -f ../PATCH/new/script/move_2_services.sh ./package/new/luci-app-passwall/move_2_services.sh
 pushd package/new/luci-app-passwall
 bash move_2_services.sh
 popd
-svn co https://github.com/xiaorouji/openwrt-package/trunk/package/tcping package/new/tcping
-svn co https://github.com/xiaorouji/openwrt-package/trunk/package/trojan-go package/new/trojan-go
-svn co https://github.com/xiaorouji/openwrt-package/trunk/package/brook package/new/brook
-svn co https://github.com/xiaorouji/openwrt-package/trunk/package/trojan-plus package/new/trojan-plus
-svn co https://github.com/xiaorouji/openwrt-package/trunk/package/ssocks package/new/ssocks
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/tcping package/new/tcping
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/trojan-go package/new/trojan-go
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/brook package/new/brook
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/trojan-plus package/new/trojan-plus
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/ssocks package/new/ssocks
+svn co https://github.com/xiaorouji/openwrt-passwall/trunk/xray package/new/xray
 #订阅转换
 svn co https://github.com/project-openwrt/openwrt/branches/openwrt-19.07/package/ctcgfw/subconverter package/new/subconverter
 svn co https://github.com/project-openwrt/openwrt/branches/openwrt-19.07/package/ctcgfw/jpcre2 package/new/jpcre2
@@ -249,7 +250,10 @@ rm -f ./package/feeds/packages/frp
 git clone https://github.com/lwz322/luci-app-frps.git package/lean/luci-app-frps
 git clone https://github.com/kuoruan/luci-app-frpc.git package/lean/luci-app-frpc
 svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/frp package/feeds/packages/frp
-
+#花生壳
+svn co https://github.com/teasiu/dragino2/trunk/package/teasiu/luci-app-phtunnel package/new/luci-app-phtunnel
+svn co https://github.com/teasiu/dragino2/trunk/package/teasiu/luci-app-oray package/new/luci-app-oray
+svn co https://github.com/teasiu/dragino2/trunk/package/teasiu/phtunnel package/new/phtunnel
 
 #Vermagic
 latest_version="$(curl -s https://github.com/openwrt/openwrt/releases |grep -Eo "v[0-9\.]+.tar.gz" |sed -n '/19/p' |sed -n 1p |sed 's/v//g' |sed 's/.tar.gz//g')"
