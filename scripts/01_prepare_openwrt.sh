@@ -17,8 +17,8 @@ cp -f ./openwrt_back/include/kernel-version.mk ./openwrt_new/include/kernel-vers
 cp -f ./openwrt_back/package/base-files/image-config.in ./openwrt_new/package/base-files/image-config.in
 cp -rf ./openwrt_back/target/linux/* ./openwrt_new/target/linux/
 cp -rf ./openwrt_new/* ./openwrt/
-git clone -b main https://github.com/Lienol/openwrt.git openwrt-lienol
-git clone -b main https://github.com/Lienol/openwrt-packages packages-lienol
-git clone -b main https://github.com/Lienol/openwrt-luci luci-lienol
-git clone -b linksys-ea6350v3-mastertrack https://github.com/NoTengoBattery/openwrt NoTengoBattery
+git clone -b main --depth 1 https://github.com/Lienol/openwrt.git openwrt-lienol
+git clone -b main --depth 1 https://github.com/Lienol/openwrt-packages packages-lienol
+git clone -b main --depth 1 https://github.com/Lienol/openwrt-luci luci-lienol
+git clone -b linksys-ea6350v3-mastertrack --depth 1 https://github.com/NoTengoBattery/openwrt NoTengoBattery
 exit 0
