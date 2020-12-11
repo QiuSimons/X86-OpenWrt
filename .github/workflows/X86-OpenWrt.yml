@@ -1,4 +1,4 @@
-name: X86_OP_SSRP
+name: X86-OpenWrt
 
 on:
 #  push:
@@ -44,8 +44,8 @@ jobs:
     - name: Prepare Openwrt
       run: |
         df -h
-        sudo chown -R runner:runner /home/runner/work/X86_OP_SSRP
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP
+        sudo chown -R runner:runner /home/runner/work/X86-OpenWrt
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt
         cp -f ./scripts/01_prepare_openwrt.sh ./01_prepare_openwrt.sh
         mkdir openwrt
         cp -rf ./scripts/. ./openwrt/
@@ -54,46 +54,46 @@ jobs:
     - name: Prepare Package
       run: |
         df -h
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt
         /bin/bash 02_prepare_package.sh
     - name: Convert Translation
       run: |
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt
         /bin/bash 03_convert_translation.sh
     - name: Remove Upx
       run: |
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt
         /bin/bash 04_remove_upx.sh
     - name: Add ACL
       run: |
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt
         /bin/bash 05_create_acl_for_luci.sh -a
     - name: Make Download
       run: |
         df -h
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt
         make defconfig
         make download -j10
     - name: Make Toolchain
       run: |
         df -h
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt
         let make_process=$(nproc)+1
         make toolchain/install -j${make_process} V=s
     - name: Compile Openwrt
       run: |
         df -h
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt
         let make_process=$(nproc)+1
         make -j${make_process} V=s || make -j1 V=s
     - name: Cleaning
       run: |
         df -h
-        cd /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt/bin/targets/x86/64
+        cd /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt/bin/targets/x86/64
         rm -rf `ls | grep -v ".gz"`
         rm -rf `ls | grep -v "combined-squashfs"`
     - name: Upload Firmwares
       uses: actions/upload-artifact@master
       with:
         name: X86
-        path: /home/runner/work/X86_OP_SSRP/X86_OP_SSRP/openwrt/bin/targets/x86/64/
+        path: /home/runner/work/X86-OpenWrt/X86-OpenWrt/openwrt/bin/targets/x86/64/
