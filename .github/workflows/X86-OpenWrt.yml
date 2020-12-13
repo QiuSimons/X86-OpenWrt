@@ -13,6 +13,7 @@ jobs:
   
   Cleanup-Old-Releases:
     runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
     steps:  
     - name: Delete Older Releases
       uses: dev-drprasad/delete-older-releases@v0.2.0
@@ -24,6 +25,7 @@ jobs:
 
   Cleanup-Old-Artifacts:
     runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
     steps:
     - name: Cleanup Old Action Artifacts
       uses: kolpav/purge-artifacts-action@v1
@@ -33,6 +35,7 @@ jobs:
         
   Cleanup-Workflow-Logs:
     runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
     steps:
       - name: Cleanup Workflow Logs
         uses: ActionsRML/delete-workflow-runs@v1.2.1
