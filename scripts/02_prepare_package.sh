@@ -230,6 +230,7 @@ svn co https://github.com/openwrt/packages/trunk/utils/yq feeds/packages/utils/y
 ln -sf ../../../feeds/packages/utils/yq ./package/feeds/packages/yq
 rm -rf ./feeds/packages/utils/lvm2
 svn co https://github.com/openwrt/packages/trunk/utils/lvm2 feeds/packages/utils/lvm2
+svn co https://github.com/openwrt/openwrt/trunk/package/libs/libselinux package/libs/libselinux
 #补全部分依赖（实际上并不会用到
 svn co https://github.com/openwrt/packages/trunk/libs/nghttp2 feeds/packages/libs/nghttp2
 ln -sf ../../../feeds/packages/libs/nghttp2 ./package/feeds/packages/nghttp2
